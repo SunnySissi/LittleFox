@@ -19,6 +19,10 @@ public class PlayerController : MonoBehaviour
     public Text gemText;
 
     public Collider2D playerColl;
+    public AudioSource jumpAFX;
+    public AudioSource collectAFX;
+    public AudioSource hurtAFX;
+
 
     
     private Rigidbody2D rb;
@@ -108,6 +112,7 @@ public class PlayerController : MonoBehaviour
         //跳跃
         if(Input.GetButtonDown("Jump") && jumpCount > 0)
         {
+            jumpAFX.Play();
             //rb.AddForce(Vector2.up * jumpForce);
             rb.velocity = new Vector2(rb.velocity.x,jumpForce * Time.fixedDeltaTime);
             SetAnimatorBool(JUMPING,true);
@@ -177,6 +182,7 @@ public class PlayerController : MonoBehaviour
         //受伤判断
         if(isHurt)
         {
+            hurtAFX.Play();
             SetAnimatorBool(HURTING,true);
             if(Mathf.Abs(rb.velocity.x) < 0.1f)
             {
@@ -192,6 +198,7 @@ public class PlayerController : MonoBehaviour
         // 判断触发器的标签是否为Collection
         if (collision.tag == "Collection")
         {
+            collectAFX.Play();
             // 判断收集物的名称是否为cherry
             if (collision.name == "cherry")
             {
@@ -226,11 +233,13 @@ public class PlayerController : MonoBehaviour
         //判断碰撞对象的标签是否为Enemy
         if(collision.gameObject.tag == "Enemy")
         {
+            //获取敌人组件
+            Enemy enemy = collision.gameObject.GetComponent<Enemy>();
             //检测是否处于下降状态
             if(animator.GetBool(FALLING))
             {
                 // 销毁物体
-                Destroy(collision.gameObject);
+                enemy.JumpOn();
                 rb.velocity = new Vector2(rb.velocity.x,jumpForce * Time.fixedDeltaTime);
                 SetAnimatorBool(JUMPING,true);
             }

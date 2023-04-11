@@ -2,25 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy_Frog : MonoBehaviour
+public class Enemy_Frog : Enemy
 {
-    private Rigidbody2D rb;
-    private Animator anim;
-    private int direction = 1; //1表示向右，-1表示向左
     private float leftX,rightX;
-    private Collider2D coll;
 
-    public LayerMask ground;
     public Transform leftPoint,rightPoint;
     public float xSpeed,ySpeed;
 
+
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-        coll = GetComponent<Collider2D>();
-        GetEdgeLocation();
+        base.Start();
+        direction = 1;
     }
 
     // Update is called once per frame
@@ -30,7 +24,7 @@ public class Enemy_Frog : MonoBehaviour
         AnimSwitcher();
     }
 
-    void Movement()
+    protected override void Movement()
     {
         if(coll.IsTouchingLayers(ground))
         {
@@ -56,7 +50,7 @@ public class Enemy_Frog : MonoBehaviour
     }
 
     //动画切换
-    void AnimSwitcher()
+    protected override void AnimSwitcher()
     {
         if(anim.GetBool("Jumping"))
         {
@@ -74,7 +68,7 @@ public class Enemy_Frog : MonoBehaviour
     }
 
     //获得运动边界的坐标值并销毁空物体
-    void GetEdgeLocation()
+    protected override void GetEdgeLocation()
     {
         leftX = leftPoint.position.x;
         rightX = rightPoint.position.x;

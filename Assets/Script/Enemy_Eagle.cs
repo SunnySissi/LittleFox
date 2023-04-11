@@ -2,24 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy_Eagle : MonoBehaviour
+public class Enemy_Eagle : Enemy
 {
-    private Rigidbody2D rb;
-    private Animator anim;
     private float upX, downX;
-    private Collider2D coll;
-    private int direction = 1; //1表示向上，-1表示向下
 
     public Transform upPoint, downPoint;
     public float ySpeed;
 
     // Start is called before the first frame update
-    void Start()
+    protected override void Start()
     {
-        rb = GetComponent<Rigidbody2D>();
-        anim = GetComponent<Animator>();
-        coll = GetComponent<Collider2D>();
-        GetEdgeLocation();
+        base.Start();
+        direction = 1; //1表示向上，-1表示向下
     }
 
     // Update is called once per frame
@@ -29,7 +23,7 @@ public class Enemy_Eagle : MonoBehaviour
         //AnimSwitcher();
     }
 
-    void Movement()
+    protected override void Movement()
     {
 
 
@@ -52,13 +46,13 @@ public class Enemy_Eagle : MonoBehaviour
     }
 
     //动画切换
-    void AnimSwitcher()
+    protected override void AnimSwitcher()
     {
 
     }
 
     //获得运动边界的坐标值并销毁空物体
-    void GetEdgeLocation()
+    protected override void GetEdgeLocation()
     {
         upX = upPoint.position.y;
         downX = downPoint.position.y;
